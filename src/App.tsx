@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Bird } from './types/birds';
-import { BirdCard } from './components/BirdCard';
-import { BirdModal } from './components/BirdModal';
-import { Bird as BirdIcon, Loader2, Search } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { Bird } from "./types/birds";
+import { BirdCard } from "./components/BirdCard";
+import { BirdModal } from "./components/BirdModal";
+import { Bird as BirdIcon, Loader2, Search } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [birds, setBirds] = useState<Bird[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const birdsPerPage = 16;
-
 
   useEffect(() => {
     fetchBirds();
@@ -21,12 +20,12 @@ function App() {
 
   const fetchBirds = async () => {
     try {
-      const response = await fetch('https://aves.ninjas.cl/api/birds');
-      if (!response.ok) throw new Error('Failed to fetch birds');
+      const response = await fetch("https://aves.ninjas.cl/api/birds");
+      if (!response.ok) throw new Error("Failed to fetch birds");
       const data = await response.json();
       setBirds(data);
     } catch (err) {
-      setError('Failed to load birds. Please try again later.');
+      setError("Failed to load birds. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -49,13 +48,20 @@ function App() {
   }
 
   const removeAccents = (str: string) => {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
-  const filteredBirds = birds.filter((bird) =>
-    removeAccents(bird.name.spanish).toLowerCase().includes(removeAccents(searchTerm).toLowerCase()) ||
-    removeAccents(bird.name.english).toLowerCase().includes(removeAccents(searchTerm).toLowerCase()) ||
-    removeAccents(bird.name.latin).toLowerCase().includes(removeAccents(searchTerm).toLowerCase())
+  const filteredBirds = birds.filter(
+    (bird) =>
+      removeAccents(bird.name.spanish)
+        .toLowerCase()
+        .includes(removeAccents(searchTerm).toLowerCase()) ||
+      removeAccents(bird.name.english)
+        .toLowerCase()
+        .includes(removeAccents(searchTerm).toLowerCase()) ||
+      removeAccents(bird.name.latin)
+        .toLowerCase()
+        .includes(removeAccents(searchTerm).toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredBirds.length / birdsPerPage);
@@ -66,7 +72,7 @@ function App() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (error) {
@@ -92,7 +98,9 @@ function App() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div className="flex items-center space-x-3">
               <BirdIcon className="w-8 h-8 text-blue-500" />
-              <h1 className="text-3xl font-bold text-gray-900">Chilean Birds</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Chilean Birds
+              </h1>
             </div>
             <div className="relative max-w-md w-full">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -132,7 +140,10 @@ function App() {
 
             {filteredBirds.length > birdsPerPage && (
               <div className="mt-8 flex justify-center">
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <nav
+                  className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                  aria-label="Pagination"
+                >
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
@@ -146,8 +157,8 @@ function App() {
                       onClick={() => handlePageChange(index + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === index + 1
-                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
+                          : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
                       }`}
                     >
                       {index + 1}
@@ -166,7 +177,9 @@ function App() {
 
             {filteredBirds.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No se encontraron aves que coincidan con tu búsqueda.</p>
+                <p className="text-gray-500 text-lg">
+                  No se encontraron aves que coincidan con tu búsqueda.
+                </p>
               </div>
             )}
           </>

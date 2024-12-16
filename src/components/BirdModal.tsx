@@ -1,7 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { X } from 'lucide-react';
-import type { Bird } from '../types/birds';
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
+import type { Bird } from "../types/birds";
 
 interface BirdModalProps {
   bird: Bird;
@@ -22,7 +21,7 @@ export function BirdModal({ bird, onClose }: BirdModalProps) {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">
           <img
